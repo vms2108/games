@@ -64,23 +64,12 @@ export class TetrisBoardComponent implements OnInit {
 
   @HostListener('window:keydown', ['$event'])
   public keyEvent(event: KeyboardEvent): void {
+    console.log(event.keyCode);
     if (event.keyCode === KEY.ESC) {
       this.gameOver();
     } else if (this.moves.find(item => item.key === event.keyCode)) {
       event.preventDefault();
-      let p = this.moves.find(item => item.key === event.keyCode)!.piece(this.piece);
-      if (event.keyCode === KEY.SPACE) {
-        while (this.boardService.valid(p, this.board)) {
-          this.points += POINTS.HARD_DROP;
-          this.piece.move(p);
-          p = this.moves.find(item => item.key === KEY.DOWN)!.piece(this.piece);
-        }
-      } else if (this.boardService.valid(p, this.board)) {
-        this.piece.move(p);
-        if (event.keyCode === KEY.DOWN) {
-          this.points += POINTS.SOFT_DROP;
-        }
-      }
+      this.doSomethingByCode(event.keyCode);
     }
   }
 
@@ -88,6 +77,22 @@ export class TetrisBoardComponent implements OnInit {
     this.initBoard();
     this.initNext();
     this.resetGame();
+  }
+
+  public doSomethingByCode(keyCode: number): void {
+    let p = this.moves.find(item => item.key === keyCode)!.piece(this.piece);
+    if (keyCode === KEY.SPACE) {
+      while (this.boardService.valid(p, this.board)) {
+        this.points += POINTS.HARD_DROP;
+        this.piece.move(p);
+        p = this.moves.find(item => item.key === KEY.DOWN)!.piece(this.piece);
+      }
+    } else if (this.boardService.valid(p, this.board)) {
+      this.piece.move(p);
+      if (keyCode === KEY.DOWN) {
+        this.points += POINTS.SOFT_DROP;
+      }
+    }
   }
 
   public initBoard(): void {
@@ -128,7 +133,7 @@ export class TetrisBoardComponent implements OnInit {
   public resetGame(): void {
     this.points = 0;
     this.lines = 0;
-    this.level = 0;
+    this.level = 1;
     this.board = this.getEmptyBoard();
     this.time = { start: 0, elapsed: 0, level: LEVELS.find(item => item.num === this.level)!.speed };
   }

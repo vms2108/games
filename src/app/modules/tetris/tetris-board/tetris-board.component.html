@@ -1,14 +1,41 @@
 
 <div class="grid">
-  <canvas #board class="game-board"></canvas>
-  <div class="right-column">
+  <div class="info">
     <div>
       <h1>TETRIS</h1>
       <p>Score: {{ points }}</p>
       <p>Lines: {{ lines }}</p>
       <p>Level: {{ level }}</p>
-      <canvas #next class="next"></canvas>
+      
     </div>
-    <button (click)="play()" class="play-button">Play</button>
+    <button class="btn" (click)="play()">
+      <span class="front">
+        Play
+      </span>
+    </button>
   </div>
+  <div class="canvas">
+    <canvas #next class="next"></canvas>
+    <canvas #board class="game-board"></canvas>
+    <div class="controllers">
+      <button class="hidden"></button>
+      <button class="btn top" (click)="doSomethingByCode(38)">
+        <span class="front"></span>
+      </button>
+      <button class="hidden2"></button>
+      <button class="btn left" (click)="doSomethingByCode(37)">
+        <span class="front"></span>
+      </button>
+      <button class="btn bottom" (click)="doSomethingByCode(40)">
+        <span class="front"></span>
+      </button>
+      <button class="btn right" (click)="doSomethingByCode(39)">
+        <span class="front"></span>
+      </button>
+      <button class="btn space" (click)="doSomethingByCode(32)">
+        <span class="front"></span>
+      </button>
+    </div>
+  </div>
+  
 </div>
