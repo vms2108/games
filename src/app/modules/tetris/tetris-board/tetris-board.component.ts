@@ -3,6 +3,8 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Host
 import {
   BLOCK_SIZE,
   COLORS,
+  COLORSDARKER,
+  COLORSLIGHTER,
   COLS,
   LEVELS,
   LINES_PER_LEVEL,
@@ -108,9 +110,9 @@ export class TetrisBoardComponent implements OnInit {
 
   public initNext(): void {
     this.ctxNext = this.canvasNext.nativeElement.getContext('2d')!;
-    this.ctxNext.canvas.width = 4 * BLOCK_SIZE;
-    this.ctxNext.canvas.height = 4 * BLOCK_SIZE;
-    this.ctxNext.scale(BLOCK_SIZE, BLOCK_SIZE);
+    this.ctxNext.canvas.width = 4 * (BLOCK_SIZE - 5);
+    this.ctxNext.canvas.height = 4 * (BLOCK_SIZE - 5);
+    this.ctxNext.scale((BLOCK_SIZE - 5), (BLOCK_SIZE - 5));
   }
 
   public getEmptyBoard(): number[][] {
@@ -137,6 +139,7 @@ export class TetrisBoardComponent implements OnInit {
     this.level = 1;
     this.board = this.getEmptyBoard();
     this.time = { start: 0, elapsed: 0, level: LEVELS.find(item => item.num === this.level)!.speed };
+    this.addOutlines();
   }
 
   public animate(now = 0): void {
@@ -212,9 +215,11 @@ export class TetrisBoardComponent implements OnInit {
         if (value > 0) {
           this.ctx!.fillStyle = COLORS[value];
           this.ctx!.fillRect(x, y, 1, 1);
+          this.add3D(x, y, value);
         }
       });
     });
+    this.addOutlines();
   }
 
   public gameOver(): void {
@@ -224,6 +229,38 @@ export class TetrisBoardComponent implements OnInit {
     this.ctx!.font = '1px Arial';
     this.ctx!.fillStyle = 'red';
     this.ctx!.fillText('GAME OVER', 1.8, 4);
+  }
+
+  private add3D(x: number, y: number, color: number): void {
+    this.ctx!.fillStyle = COLORSDARKER[color];
+
+    this.ctx!.fillRect(x + .9, y, .1, 1);
+    this.ctx!.fillRect(x, y + .9, 1, .1);
+
+    this.ctx!.fillRect(x + .65, y + .3, .05, .3);
+    this.ctx!.fillRect(x + .3, y + .6, .4, .05);
+
+    this.ctx!.fillStyle = COLORSLIGHTER[color];
+
+    this.ctx!.fillRect(x + .3, y + .3, .05, .3);
+    this.ctx!.fillRect(x + .3, y + .3, .4, .05);
+
+    this.ctx!.fillRect(x, y, .05, 1);
+    this.ctx!.fillRect(x, y, .1, .95);
+    this.ctx!.fillRect(x, y, 1 , .05);
+    this.ctx!.fillRect(x, y, .95, .1);
+  }
+
+  private addOutlines(): void {
+    for (let index = 1; index < COLS; index++) {
+      this.ctx!.fillStyle = 'black';
+      this.ctx!.fillRect(index, 0, .025, this.ctx!.canvas.height);
+    }
+
+    for (let index = 1; index < ROWS; index++) {
+      this.ctx!.fillStyle = 'black';
+      this.ctx!.fillRect(0, index, this.ctx!.canvas.width, .025);
+    }
   }
 
 }
