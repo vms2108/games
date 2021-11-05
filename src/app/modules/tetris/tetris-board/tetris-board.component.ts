@@ -4,7 +4,6 @@ import {
   BLOCK_SIZE,
   COLORS,
   COLS,
-  KEY,
   LEVELS,
   LINES_PER_LEVEL,
   POINTS,
@@ -51,11 +50,11 @@ export class TetrisBoardComponent implements OnInit {
   public time!: { start: number; elapsed: number; level: number };
 
   public moves = [
-    new Move(KEY.LEFT, (p: IPiece): IPiece => ({ ...p, x: p.x - 1 })),
-    new Move(KEY.RIGHT, (p: IPiece): IPiece => ({ ...p, x: p.x + 1 })),
-    new Move(KEY.DOWN, (p: IPiece): IPiece => ({ ...p, y: p.y + 1 })),
-    new Move(KEY.SPACE, (p: IPiece): IPiece => ({ ...p, y: p.y + 1 })),
-    new Move(KEY.UP, (p: IPiece): IPiece => this.boardService.rotate(p)),
+    new Move('ArrowLeft', (p: IPiece): IPiece => ({ ...p, x: p.x - 1 })),
+    new Move('ArrowRight', (p: IPiece): IPiece => ({ ...p, x: p.x + 1 })),
+    new Move('ArrowDown', (p: IPiece): IPiece => ({ ...p, y: p.y + 1 })),
+    new Move(' ', (p: IPiece): IPiece => ({ ...p, y: p.y + 1 })),
+    new Move('ArrowUp', (p: IPiece): IPiece => this.boardService.rotate(p)),
   ];
   constructor(
     private boardService: BoardService,
@@ -64,12 +63,11 @@ export class TetrisBoardComponent implements OnInit {
 
   @HostListener('window:keydown', ['$event'])
   public keyEvent(event: KeyboardEvent): void {
-    console.log(event.keyCode);
-    if (event.keyCode === KEY.ESC) {
+    if (event.key === 'Escape') {
       this.gameOver();
-    } else if (this.moves.find(item => item.key === event.keyCode)) {
+    } else if (this.moves.find(item => item.key === event.key)) {
       event.preventDefault();
-      this.doSomethingByCode(event.keyCode);
+      this.doSomethingByCode(event.key);
     }
   }
 
@@ -79,17 +77,20 @@ export class TetrisBoardComponent implements OnInit {
     this.resetGame();
   }
 
-  public doSomethingByCode(keyCode: number): void {
-    let p = this.moves.find(item => item.key === keyCode)!.piece(this.piece);
-    if (keyCode === KEY.SPACE) {
+  public doSomethingByCode(key: string): void {
+    if (!this.piece) {
+      return;
+    }
+    let p = this.moves.find(item => item.key === key)!.piece(this.piece);
+    if (key === ' ') {
       while (this.boardService.valid(p, this.board)) {
         this.points += POINTS.HARD_DROP;
         this.piece.move(p);
-        p = this.moves.find(item => item.key === KEY.DOWN)!.piece(this.piece);
+        p = this.moves.find(item => item.key === 'ArrowDown')!.piece(this.piece);
       }
     } else if (this.boardService.valid(p, this.board)) {
       this.piece.move(p);
-      if (keyCode === KEY.DOWN) {
+      if (key === 'ArrowDown') {
         this.points += POINTS.SOFT_DROP;
       }
     }
@@ -158,14 +159,13 @@ export class TetrisBoardComponent implements OnInit {
   }
 
   public drop(): boolean {
-    const p = this.moves.find(item => item.key === KEY.DOWN)!.piece(this.piece);
+    const p = this.moves.find(item => item.key === 'ArrowDown')!.piece(this.piece);
     if (this.boardService.valid(p, this.board)) {
       this.piece.move(p);
     } else {
       this.freeze();
       this.clearLines();
       if (this.piece.y === 0) {
-        // Game over
         return false;
       }
       this.piece = this.next;

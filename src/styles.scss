@@ -10,8 +10,9 @@ body {
 
 button {
   border: none;
+  background: none;
 }
 
-textarea:focus, input:focus, button:focus {
-  outline: none;
+textarea:focus, input:focus, button:focus, button:focus-visible {
+  outline: none !important;
 }
