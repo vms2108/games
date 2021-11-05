@@ -123,6 +123,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "games"
+    }
+  },
+  "defaultProject": "games",
+  "cli": {
+    "analytics": "7fcb82a3-ccf6-45c3-9ce8-22c43a82f7be"
+  }
 }
