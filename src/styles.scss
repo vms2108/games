@@ -16,3 +16,11 @@ button {
 textarea:focus, input:focus, button:focus, button:focus-visible {
   outline: none !important;
 }
+
+input,
+textarea,
+button,
+select,
+a {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}

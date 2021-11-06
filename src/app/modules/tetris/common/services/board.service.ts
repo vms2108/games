@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 
+import { COLS, POINTS, ROWS } from '../constants/tetris-constants';
 import { IPiece } from '../interfaces/piece.json-interface';
-
-import { COLS, POINTS, ROWS } from './../constants/tetris-canvas-size';
 
 @Injectable()
 export class BoardService {

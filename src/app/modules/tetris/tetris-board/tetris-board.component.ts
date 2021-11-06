@@ -10,7 +10,7 @@ import {
   LINES_PER_LEVEL,
   POINTS,
   ROWS,
-} from '../common/constants/tetris-canvas-size';
+} from '../common/constants/tetris-constants';
 import { IPiece } from '../common/interfaces/piece.json-interface';
 import { Piece } from '../common/models/piece';
 import { BoardService } from '../common/services/board.service';

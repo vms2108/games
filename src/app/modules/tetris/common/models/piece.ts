@@ -1,6 +1,5 @@
+import { COLORS, COLORSDARKER, COLORSLIGHTER, SHAPES } from '../constants/tetris-constants';
 import { IPiece } from '../interfaces/piece.json-interface';
-
-import { COLORS, COLORSDARKER, COLORSLIGHTER, SHAPES } from './../constants/tetris-canvas-size';
 
 export class Piece implements IPiece {
   public x!: number;
@@ -25,29 +24,34 @@ export class Piece implements IPiece {
   }
 
   public draw(): void {
-    if (this.ctx && this.shape) {
-      this.ctx.fillStyle = this.color;
-      this.shape.forEach((row, y) => {
-        row.forEach((value, x) => {
-          if (value > 0) {
-            this.ctx!.fillRect(this.x + x, this.y + y, 1, 1);
-            const currentX = this.x + x;
-            const currentY = this.y + y;
-            this.ctx.fillRect(currentX, currentY, 1, 1);
-            this.add3D(this.ctx, currentX, currentY);
-          }
-        });
+    this.shape.forEach((row, y) => {
+      row.forEach((value, x) => {
+        if (value > 0) {
+          this.ctx.fillStyle = this.color;
+          const currentX = this.x + x;
+          const currentY = this.y + y;
+          this.ctx.fillRect(currentX, currentY, 1, 1);
+          this.add3D(this.ctx, currentX, currentY);
+        }
       });
-    }
+    });
   }
 
   public drawNext(ctxNext: CanvasRenderingContext2D): void {
     ctxNext.clearRect(0, 0, ctxNext.canvas.width, ctxNext.canvas.height);
+    this.shape.forEach((row, y) => {
+      row.forEach((value, x) => {
+        if (value > 0) {
+          this.addNextShadow(ctxNext, x, y);
+        }
+      });
+    });
+
     ctxNext.fillStyle = this.color;
     this.shape.forEach((row, y) => {
       row.forEach((value, x) => {
         if (value > 0) {
-          ctxNext.fillRect(x, y, 1, 1);
+          ctxNext.fillStyle = this.color;
           const currentX = x + .025;
           const currentY = y + .025;
           ctxNext.fillRect(currentX, currentY, 1 - 0.025, 1 - 0.025);
@@ -80,5 +84,10 @@ export class Piece implements IPiece {
     ctx.fillRect(x, y, .1, .95);
     ctx.fillRect(x, y, 1 , .05);
     ctx.fillRect(x, y, .95, .1);
+  }
+
+  private addNextShadow(ctx: CanvasRenderingContext2D, x: number, y: number): void {
+    ctx.fillStyle = 'black';
+    ctx.fillRect(x, y, 1.025, 1.025);
   }
 }
