@@ -4,13 +4,14 @@ import { PageService } from 'src/app/route-components/navigation/common/page.ser
 import { Pages } from 'src/app/route-components/navigation/common/pages.enum';
 
 @Component({
-  selector: 'app-route-tetris',
-  templateUrl: './route-tetris.component.html',
-  styleUrls: ['./route-tetris.component.scss'],
+  selector: 'app-index',
+  templateUrl: './index.component.html',
+  styleUrls: ['./index.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class RouteTetrisComponent implements OnInit {
-  private readonly TITLE = 'Tetris';
+export class IndexComponent implements OnInit {
+
+  private readonly TITLE = 'Games main page';
 
   constructor(
     private titleService: TitleService,
@@ -24,6 +25,6 @@ export class RouteTetrisComponent implements OnInit {
   }
 
   private setPage(): void {
-    this.pageService.setPage(Pages.TETRIS);
+    this.pageService.setPage(Pages.MAIN);
   }
 }

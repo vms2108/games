@@ -1,0 +1,71 @@
+@import 'src/app/ui/styles/colors';
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  padding: 0 7px;
+  background: $header-bg;
+
+  &--stage {
+    background: $header-green-bg;
+  }
+
+  &--prod {
+    background: $header-red-bg;
+  }
+}
+
+.btn {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.humburger {
+  padding-top: 5px;
+  cursor: pointer;
+  color: #000;
+  margin-right: 10px;
+
+  &:hover {
+    color: $green-color;
+  }
+}
+
+.exit {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: none;
+  color: $title-text-color;
+
+  & .mat-icon {
+    color: $text-color;
+  }
+}
+
+.title {
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.info {
+  display: block;
+  padding: 1px 0 0 12px;
+  height: 25px;
+  margin-left: 12px;
+  font-size: 14px;
+  color: $title-text-color;
+  border-left: 1px solid $title-text-color;
+}
+
+.svg {
+  height: 25px;
+}

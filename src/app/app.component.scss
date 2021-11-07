@@ -1,0 +1,45 @@
+@import 'src/app/ui/styles/colors';
+
+$header-height: 48px;
+$navigation-width: 200px;
+$navigation-width-small: 44px;
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+header {
+  height: $header-height;
+}
+
+section {
+  display: flex;
+  height: calc(100% - #{$header-height});
+  overflow: auto;
+}
+
+nav {
+  position: absolute;
+  width: $navigation-width-small;
+  height: calc(100% - #{$header-height});
+  box-sizing: border-box;
+  background: $light-menu-bg;
+  transition: width 0.5s;
+}
+
+.info {
+  margin-left: $navigation-width-small;
+  width: 100%;
+  transition: margin 0.5s;
+}
+
+.opened {
+  nav {
+    width: $navigation-width;
+  }
+
+  .info {
+    margin-left: $navigation-width;
+  }
+}
